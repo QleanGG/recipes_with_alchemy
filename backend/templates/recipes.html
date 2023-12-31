@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}Recipes - Recipes Website{% endblock %}
+
+{% block content %}
+<h2>Recipes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Recipe Name</th>
+            <th>Ingredients</th>
+            <th>Cooking Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for recipe in recipes %}
+        <tr>
+            <td>{{ recipe.id }}</td>
+            <td>{{ recipe.name }}</td>
+            <td>{{ recipe.ingredients }}</td>
+            <td>{{ recipe.cooking_time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('add_recipe') }}" class="btn btn-success mb-3">Add Recipe</a>
+{% endblock %}
