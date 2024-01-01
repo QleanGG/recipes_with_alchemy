@@ -51,8 +51,10 @@ def add_recipe():
 
 @app.route('/recipes')
 def show_recipes():
-    recipes = Recipe.query.all()
-    return render_template('recipes.html', recipes=recipes)
+    if session:
+        recipes = Recipe.query.all()
+        return render_template('recipes.html', recipes=recipes)
+    return redirect(url_for('login'))
 
 @app.route('/remove/<int:id>', methods=['GET', 'POST'])
 def remove_recipe(id):
@@ -92,6 +94,7 @@ def login():
 
         if user and user.password == password:
             session['user_id'] = user.id
+            session['user_name'] = user.username
             flash('Logged in successfully', 'success')
             return redirect('/')
         else:
@@ -118,6 +121,12 @@ def register():
             return redirect('/login')
 
     return render_template('register.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Logged out successfully', 'success')
+    return redirect('/')
 
 
 if __name__ == '__main__':

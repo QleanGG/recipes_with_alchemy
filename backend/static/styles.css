@@ -1,0 +1,108 @@
+/* Navigation Bar */
+.navbar {
+    background-color: #c72c41; /* Rich red color */
+    border-bottom: 2px solid #a61e32; /* Darker red border */
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: #fff; /* White text color */
+    font-weight: bold;
+}
+
+.navbar-toggler-icon {
+    background-color: #fff; /* White color for the toggler icon */
+}
+
+/* Content Area */
+.container {
+    background-color: #f6f6f6; /* Light gray background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
+}
+
+/* Buttons */
+.btn-success {
+    background-color: #76b041; /* Green color */
+    border-color: #76b041;
+    color: #fff; /* White text color */
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #5a8d31; /* Darker green on hover */
+    border-color: #5a8d31;
+}
+
+.btn-danger {
+    background-color: #d9534f; /* Red color */
+    border-color: #d9534f;
+    color: #fff; /* White text color */
+    font-weight: bold;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c; /* Darker red on hover */
+    border-color: #c9302c;
+}
+
+/* Alerts */
+.alert-info {
+    background-color: #c72c41; /* Rich red color for info messages */
+    color: #fff;
+}
+
+.alert-error {
+    background-color: #d9534f; /* Red color for error messages */
+    color: #fff;
+}
+
+/* Fancy Restaurant Theme */
+.fancy-title {
+    color: #c72c41; /* Rich red color for titles */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.fancy-subtitle {
+    color: #d9534f; /* Slightly darker red for subtitles */
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.fancy-description {
+    color: #333; /* Dark gray for descriptions */
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Fancy Button */
+.fancy-button {
+    background-color: #d9534f; /* Red color for fancy buttons */
+    border-color: #d9534f;
+    color: #fff; /* White text color */
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.fancy-button:hover {
+    background-color: #c9302c; /* Darker red on hover */
+    border-color: #c9302c;
+    text-decoration: none;
+}
+
+/* Body Background */
+body {
+    background-color: #f8f3ee; /* Light cream color for the background */
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #c72c41; /* Rich red color */
+    border-bottom: 2px solid #a61e32; /* Darker red border */
+}
+
+
