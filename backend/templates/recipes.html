@@ -3,27 +3,49 @@
 {% block title %}Recipes - Recipes Website{% endblock %}
 
 {% block content %}
-<h2>Recipes</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Recipe Name</th>
-            <th>Ingredients</th>
-            <th>Cooking Time</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for recipe in recipes %}
-        <tr>
-            <td>{{ recipe.id }}</td>
-            <td>{{ recipe.name }}</td>
-            <td>{{ recipe.ingredients }}</td>
-            <td>{{ recipe.cooking_time }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container">
+    <h2>Recipes</h2>
 
-<a href="{{ url_for('add_recipe') }}" class="btn btn-success mb-3">Add Recipe</a>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-info">
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Recipe Name</th>
+                <th>Ingredients</th>
+                <th>Cooking Time</th>
+                <th>Action</th> <!-- Add a new column for action buttons -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for recipe in recipes %}
+            <tr>
+                <td>{{ recipe.id }}</td>
+                <td>{{ recipe.name }}</td>
+                <td>{{ recipe.ingredients }}</td>
+                <td>{{ recipe.cooking_time }}</td>
+                <td>
+                    <a href="{{ url_for('edit_recipe', id=recipe.id) }}" class="btn btn-info btn-sm">Edit</a>
+                    <a href="{{ url_for('remove_recipe', id=recipe.id) }}"
+                        class="btn btn-danger btn-sm">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('add_recipe') }}" class="btn btn-success mb-3">Add Recipe</a>
+</div>
 {% endblock %}
