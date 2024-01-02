@@ -109,7 +109,7 @@ def add_recipe():
    
 @app.route('/recipes')
 def show_recipes():
-    if session:
+    if 'user_id' in session:
         recipes = Recipe.query.all()
         return render_template('recipes.html', recipes=recipes)
     return redirect(url_for('login'))
@@ -182,8 +182,8 @@ def register():
 
 @app.route('/logout')
 def logout():
-    session.clear()
     flash('Logged out successfully', 'success')
+    session.clear()
     return redirect('/')
 
 
