@@ -5,20 +5,26 @@
 {% block content %}
 <div class="container">
     <h2>Add a New Recipe</h2>
-    <form method="POST" action="{{ url_for('add_recipe') }}">
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
         <div class="form-group">
-            <label for="name">Recipe Name:</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
         </div>
         <div class="form-group">
-            <label for="ingredients">Ingredients:</label>
-            <textarea class="form-control" id="ingredients" name="ingredients" rows="4" required></textarea>
+            {{ form.ingredients.label(class="form-label") }}
+            {{ form.ingredients(class="form-control") }}
         </div>
         <div class="form-group">
-            <label for="cooking_time">Cooking Time (min):</label>
-            <input type="text" class="form-control" id="cooking_time" name="cooking_time" required>
+            {{ form.cooking_time.label(class="form-label") }}
+            {{ form.cooking_time(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.image.label(class="form-label") }}
+            {{ form.image(class="form-control-file") }}
         </div>
         <button type="submit" class="btn btn-primary">Add Recipe</button>
     </form>
+    
 </div>
 {% endblock %}

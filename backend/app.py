@@ -1,9 +1,42 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+import os
+from datetime import datetime
+import random
+import string
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from wtforms import StringField, TextAreaField
+from wtforms.validators import DataRequired
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = 'my_secret_key'
+
+def generate_unique_filename(filename):
+    # Get the file extension from the original filename
+    file_extension = filename.rsplit('.', 1)[1]
+    
+    # Generate a random string of characters
+    random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+
+    # Create a unique filename by combining timestamp and random string
+    unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}-{random_string}.{file_extension}"
+    
+    return unique_filename
+
+
+# upload folder declaration
+app.config['UPLOAD_FOLDER'] = 'uploads'
+
+#form declaration
+class RecipeForm(FlaskForm):
+    name = StringField("Recipe Name", validators=[DataRequired()])
+    ingredients = TextAreaField("Ingredients", validators=[DataRequired()])
+    cooking_time = StringField("Cooking Time", validators=[DataRequired()])
+    image = FileField("Recipe Image", validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif'], 'Images only!')])
 
 # SQLAlchemy configuration
 
@@ -18,12 +51,18 @@ class Recipe(db.Model):
     name = db.Column(db.String(100), nullable=False)
     ingredients = db.Column(db.String(200))
     cooking_time = db.Column(db.String(100))
+    image_path = db.Column(db.String(255))
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
+def __init__(self, name, ingredients, cooking_time, image_filename=None):
+    self.name = name
+    self.ingredients = ingredients
+    self.cooking_time = cooking_time
+    self.image_path = image_filename
 
 # Create the 'recipes' database if it doesn't exist
 with app.app_context():
@@ -33,22 +72,41 @@ with app.app_context():
 def index():
     return render_template('index.html')
 
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory('uploads', filename)
+
 @app.route('/add', methods=['GET', 'POST'])
 def add_recipe():
-    # if not session.get('logged_in'):
-    # return redirect(url_for('login'))
+    form = RecipeForm()
 
-    if request.method == 'POST':
-        name = request.form['name']
-        ingredients = request.form['ingredients']
-        cooking_time = request.form['cooking_time']
+    if form.validate_on_submit():
+        name = form.name.data
+        ingredients = form.ingredients.data
+        cooking_time = form.cooking_time.data
+        image = form.image.data
 
-        new_recipe = Recipe(name=name, ingredients=ingredients, cooking_time=cooking_time)
+        # Handle the file upload
+        if image:
+            filename = secure_filename(image.filename)
+            unique_filename = generate_unique_filename(filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+        else:
+            filename = None
+
+        # Create a new recipe with the image filename
+        new_recipe = Recipe(name=name, ingredients=ingredients, cooking_time=cooking_time, image_path=unique_filename)
         db.session.add(new_recipe)
         db.session.commit()
+        flash('Recipe added successfully', 'success')
         return redirect('/recipes')
-    return render_template('add_recipe.html')
 
+    return render_template('add_recipe.html', form=form)
+
+
+#------------------------------------------------------
+    
+   
 @app.route('/recipes')
 def show_recipes():
     if session:
